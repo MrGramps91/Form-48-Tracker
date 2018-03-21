@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-
+import guitest.RowColorRenderer;
 
 public class GuiTest extends JPanel{
     private boolean DEBUG = false;
@@ -30,7 +30,7 @@ public class GuiTest extends JPanel{
 //* Stores informtion from the input textfield*// 
         Object[][]data={{"Random Cadet Name","MM/DD/YY",
                         "MM/DD/YY","random.email@email.com",
-                        "Click Box Below"}};
+                        " "}};
         
 //*Creating the table to use the arguements of the colName and data object*//
        
@@ -38,6 +38,7 @@ public class GuiTest extends JPanel{
          JTable table  = new JTable(model);
          table.setPreferredScrollableViewportSize(new Dimension(700,300));
          table.setFillsViewportHeight(true);
+         table.getColumnModel().getColumn(4).setCellRenderer(new RowColorRenderer());
          JScrollPane scrollPane = new JScrollPane(table);
          
         JPanel inputBox = new JPanel();
@@ -122,24 +123,9 @@ public class GuiTest extends JPanel{
           
         add(inputBox);
         add(scrollPane);
-             
+                           
     }        
-//class to implement color in the 'Turned in ?' cell//
-public class MyTableCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer{
-    @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-      boolean hasFocus, int row, int column) {
-        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        String s = table.getModel().getValueAt(row, column).toString();
-    if ("Yes".equals(s)){
-        setBackground(Color.green);
-    }else{
-        setBackground(table.getBackground());
-    }
-     return this;
-    }
-}
-       
+ 
     private static void createAndShowGui(){
         JFrame frame = new JFrame("TableDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
