@@ -20,7 +20,7 @@ public class GuiTest extends JPanel{
     JLabel name,checkInDate,checkOutDate,email;
     public static final int ValidationCol = 4;
     public GuiTest(){
-        super(new GridLayout(1,3,0,5));
+        super(new GridLayout(2,3,0,5));
 
 //*creates a colname variable*//        
         String[] colNames ={"Name","Check in date",
@@ -51,7 +51,51 @@ public class GuiTest extends JPanel{
         comboBox.addItem("No");
         turnedInCol.setCellEditor(new DefaultCellEditor(comboBox));
         
+        JPanel title = new JPanel();
+        JLabel name = new JLabel("Last name, First");
+        title.setLayout(new GridBagLayout());
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.insets = new Insets(35,5,5,5);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.CENTER;             
+        inputBox.add(name, gbc);
         
+        JLabel checkOut = new JLabel("Check Out Date");
+        title.setLayout(new GridBagLayout());
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.insets = new Insets(35,5,5,5);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.CENTER;                
+        inputBox.add(checkOut, gbc);
+        
+        JLabel checkIn = new JLabel("Check In Date");
+        title.setLayout(new GridBagLayout());
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.insets = new Insets(35,5,5,5);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.CENTER;              
+        inputBox.add(checkIn, gbc);
+        
+        JLabel email = new JLabel("Enter your Email");
+        title.setLayout(new GridBagLayout());
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.insets = new Insets(35,5,5,5);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.CENTER;                
+        inputBox.add(email, gbc);
+       
+        JLabel logo = new JLabel("Form 48 Tracker");
+        title.setLayout(new GridBagLayout());
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.insets = new Insets(35,5,5,5);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        inputBox.add(logo,gbc);
         
         add = new JButton("Add");
         gbc.fill = GridBagConstraints.RELATIVE;
@@ -90,8 +134,7 @@ public class GuiTest extends JPanel{
         gbc.weightx = 0.5;
         gbc.insets = new Insets(35,5,5,5);
         gbc.gridx =1;
-        gbc.gridy =0;
-        
+        gbc.gridy =1;        
         inputBox.add(inputField, gbc);
         
         inputField1 = new JTextField(10);
@@ -99,8 +142,7 @@ public class GuiTest extends JPanel{
         gbc.weightx = 0.5;
         gbc.insets = new Insets(35,5,5,5);
         gbc.gridx =1;
-        gbc.gridy =1;
-        
+        gbc.gridy =2;        
         inputBox.add(inputField1, gbc);
         
         inputField2 = new JTextField(10);
@@ -108,8 +150,7 @@ public class GuiTest extends JPanel{
         gbc.weightx = 0.5;
         gbc.insets = new Insets(35,5,5,5);
         gbc.gridx =1;
-        gbc.gridy =2;
-        
+        gbc.gridy =3;        
         inputBox.add(inputField2, gbc);
         
         inputField3 = new JTextField(10);
@@ -117,15 +158,18 @@ public class GuiTest extends JPanel{
         gbc.weightx = 0.5;
         gbc.insets = new Insets(35,5,5,5);
         gbc.gridx =1;
-        gbc.gridy =3;
-        
+        gbc.gridy =4;        
         inputBox.add(inputField3, gbc);
-          
+        
         add(inputBox);
         add(scrollPane);
-                           
-    }        
- 
+    } 
+    
+    @Override
+    public void paintComponent(Graphics g){
+     g.setFont(new Font("TimesRoman", Font.BOLD,48));
+     super.paintComponent(g);
+ }
     private static void createAndShowGui(){
         JFrame frame = new JFrame("TableDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
