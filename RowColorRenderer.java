@@ -19,17 +19,20 @@ class RowColorRenderer extends DefaultTableCellRenderer{
     }
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
       boolean hasFocus, int row, int column) {
-        
-        if(value instanceof String){
-            String s = (String) value;
-            if(s.equals("Yes")){
+       
+        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
+            String s = (String) table.getModel().getValueAt(row, 4);
+            if("Yes".equals(s)){
                 setBackground(Color.GREEN);
                 setForeground(Color.BLACK);
-            }else
-                setBackground(Color.WHITE);
-            setHorizontalAlignment(CENTER);
-            setText(s);
+            }else{
+                setBackground(table.getBackground());
+                setForeground(table.getForeground());
+                setHorizontalAlignment(CENTER);
+                setText(s);            
         }
         return this;
     }
 }
+     
