@@ -1,4 +1,4 @@
-package guitest;
+package GuiForm;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,19 +7,25 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.util.*;
+import java.util.logging.Level;
+
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import guitest.RowColorRenderer;
+import GuiForm.RowColorRenderer;
+import common.Logger;
+import jxl.*;
+import java.io.*;
 
-public class GuiTest extends JPanel{
+
+public class Main extends JPanel{
     private boolean DEBUG = false;
-    JButton add,delete;
+    JButton add,loadBtn;
     JTextField inputField,inputField1,inputField2, inputField3 ;
     JLabel name,checkInDate,checkOutDate,email;
     public static final int ValidationCol = 4;
-    public GuiTest(){
+    public Main(){
         super(new GridLayout(2,3,0,5));
 
 //*creates a colname variable*//        
@@ -100,29 +106,63 @@ public class GuiTest extends JPanel{
         add = new JButton("Add");
         gbc.fill = GridBagConstraints.RELATIVE;
         gbc.gridx =1;
-        gbc.gridy =10;
+        gbc.gridy =5;
         add.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-              if(e.getSource() == add){
-            inputField.getText();
-            inputField1.getText();
-            inputField2.getText();
-            inputField3.getText();
-            Object[] row = {inputField.getText(),
-            inputField1.getText(),
-            inputField2.getText(),
-            inputField3.getText()};
-            model.addRow(row);
-        }
+            public void actionPerformed(java.awt.event.ActionEvent e){
+            	
+            	String filePath = "C:\\Users\\Public\\testfile\\trackingInfotest.txt";
+            	File file = new File(filePath);
+            	 if(e.getSource() == add){
+            	            inputField.getText();
+            	            inputField1.getText();
+            	            inputField2.getText();
+            	            inputField3.getText();
+            	            Object[] row = {inputField.getText(),
+            	            inputField1.getText(),
+            	            inputField2.getText(),
+            	            inputField3.getText()};
+            	            model.addRow(row);
+            	            }
+            	try {
+            		FileWriter fw = new FileWriter(file);
+            		BufferedWriter bw = new BufferedWriter(fw);
+            		            		
+            		for(int i = 0; i < model.getRowCount(); i++) {
+            			for(int j = 0; j < model.getColumnCount(); j++) {
+            				bw.write(model.getValueAt(i,j).toString()+"");
+                 			}
+            			bw.newLine();
+            		}
+            			bw.close();
+            			fw.close();
+            			
+            	} catch(IOException ex) {
+            		
+            	}
+             
             }
         });
         inputBox.add(add, gbc);
          
-        /*delete = new JButton("Delete");
+        loadBtn = new JButton("Load File");
         gbc.fill = GridBagConstraints.BASELINE_TRAILING;
         gbc.gridx =2;
-        gbc.gridy =0;
-        inputBox.add(delete, gbc);*/
+        gbc.gridy =5;
+        loadBtn.addActionListener(new ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent e){
+            	
+            	String filePath = "\\\\\\\\ad.uky.edu\\\\AS\\\\AirForce\\\\rho254\\\\Desktop\\\\txtTest\\\\trackingInfotest.txt";
+                JFileChooser jf = new JFileChooser();
+                jf.setDialogTitle("Please Select a excel file to import");
+               int result = jf.showOpenDialog(null);
+               if(result == JFileChooser.APPROVE_OPTION){
+                  
+                 }
+               
+               
+            }
+        });
+        inputBox.add(loadBtn, gbc);
         
         name = new JLabel("Name");
         checkInDate = new JLabel("Check In Date");
@@ -174,7 +214,7 @@ public class GuiTest extends JPanel{
         JFrame frame = new JFrame("TableDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        GuiTest contentPane = new GuiTest();
+        Main contentPane = new Main();
         contentPane.setOpaque(true);
         frame.setContentPane(contentPane);
         
