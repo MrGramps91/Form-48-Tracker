@@ -29,14 +29,12 @@ public class Main extends JPanel{
         super(new GridLayout(2,3,0,5));
 
 //*creates a colname variable*//        
-        String[] colNames ={"Name","Check in date",
+       final String[] colNames ={"Name","Check in date",
                             "Check out date","Email",
-                              "Turned In ?"};
+                              "Turned In?"};
        
 //* Stores informtion from the input textfield*// 
-        Object[][]data={{"Random Cadet Name","MM/DD/YY",
-                        "MM/DD/YY","random.email@email.com",
-                        " "}};
+        Object[][]data={{}};
         
 //*Creating the table to use the arguements of the colName and data object*//
        
@@ -45,6 +43,7 @@ public class Main extends JPanel{
          table.setPreferredScrollableViewportSize(new Dimension(700,300));
          table.setFillsViewportHeight(true);
          table.getColumnModel().getColumn(4).setCellRenderer(new RowColorRenderer());
+         model.setRowCount(0);
          JScrollPane scrollPane = new JScrollPane(table);
          
         JPanel inputBox = new JPanel();
@@ -109,9 +108,12 @@ public class Main extends JPanel{
         gbc.gridy =5;
         add.addActionListener(new ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent e){
-            	
+            try {
             	String filePath = "C:\\Users\\Public\\testfile\\trackingInfotest.txt";
             	File file = new File(filePath);
+            	if(!file.exists()) {
+            		file.createNewFile();
+            	}
             	 if(e.getSource() == add){
             	            inputField.getText();
             	            inputField1.getText();
@@ -123,21 +125,22 @@ public class Main extends JPanel{
             	            inputField3.getText()};
             	            model.addRow(row);
             	            }
-            	try {
-            		FileWriter fw = new FileWriter(file);
+            	
+            		FileWriter fw = new FileWriter(file.getAbsolutePath());
             		BufferedWriter bw = new BufferedWriter(fw);
             		            		
-            		for(int i = 0; i < model.getRowCount(); i++) {
-            			for(int j = 0; j < model.getColumnCount(); j++) {
-            				bw.write(model.getValueAt(i,j).toString()+"");
+            		for(int i = 0; i < table.getRowCount(); i++) {
+            			for(int j = 0; j < table.getColumnCount(); j++) {
+            				bw.write(table.getModel().getValueAt(i,j)+" ");
                  			}
             			bw.newLine();
             		}
             			bw.close();
             			fw.close();
+            			JOptionPane.showMessageDialog(null,"Data Saved");
             			
-            	} catch(IOException ex) {
-            		
+            	} catch(Exception ex) {
+            		ex.printStackTrace();
             	}
              
             }
@@ -151,16 +154,32 @@ public class Main extends JPanel{
         loadBtn.addActionListener(new ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent e){
             	
-            	String filePath = "\\\\\\\\ad.uky.edu\\\\AS\\\\AirForce\\\\rho254\\\\Desktop\\\\txtTest\\\\trackingInfotest.txt";
-                JFileChooser jf = new JFileChooser();
-                jf.setDialogTitle("Please Select a excel file to import");
-               int result = jf.showOpenDialog(null);
-               if(result == JFileChooser.APPROVE_OPTION){
-                  
-                 }
-               
-               
-            }
+            	String filePath = "C:\\Users\\Public\\testfile\\trackingInfotest.txt";
+            	File file = new File(filePath);
+            	
+            	try {
+					BufferedReader br = new BufferedReader(new FileReader(file));
+					String firstLine = br.readLine().trim();
+					String[] colName = firstLine.split(",");
+					DefaultTableModel model = (DefaultTableModel)table.getModel();
+					model.setColumnIdentifiers(colName);
+					
+					Object[]tableLines = br.lines().toArray();
+					
+					for(int i = 0; i < tableLines.length; i++) {
+						
+						String line = tableLines[i].toString().trim();
+						String[] dataRow = line.split("/");
+						model.addRow(dataRow);
+					}
+					
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+            		
+            	}
+                        
         });
         inputBox.add(loadBtn, gbc);
         
