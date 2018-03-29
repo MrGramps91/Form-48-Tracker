@@ -30,8 +30,8 @@ public class Main extends JPanel{
 
 //*creates a colname variable*//        
        final String[] colNames ={"Name","Check in date",
-                            "Check out date","Email",
-                              "Turned In?"};
+    		   					"Check out date","Email",
+                            	 "Turned In?"};
        
 //* Stores informtion from the input textfield*// 
         Object[][]data={{}};
@@ -131,7 +131,7 @@ public class Main extends JPanel{
             		            		
             		for(int i = 0; i < table.getRowCount(); i++) {
             			for(int j = 0; j < table.getColumnCount(); j++) {
-            				bw.write(table.getModel().getValueAt(i,j)+" ");
+            				bw.write(table.getModel().getValueAt(i,j)+",");
                  			}
             			bw.newLine();
             		}
@@ -162,14 +162,16 @@ public class Main extends JPanel{
 					String firstLine = br.readLine().trim();
 					String[] colName = firstLine.split(",");
 					DefaultTableModel model = (DefaultTableModel)table.getModel();
-					model.setColumnIdentifiers(colName);
+					
+					/* This is used to rewrite column names (Do not Use)...probably delete
+							model.setColumnIdentifiers(colName);*/
 					
 					Object[]tableLines = br.lines().toArray();
 					
 					for(int i = 0; i < tableLines.length; i++) {
 						
 						String line = tableLines[i].toString().trim();
-						String[] dataRow = line.split("/");
+						String[] dataRow = line.split(",");
 						model.addRow(dataRow);
 					}
 					
